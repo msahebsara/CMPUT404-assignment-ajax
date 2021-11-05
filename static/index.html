@@ -18,7 +18,7 @@
     governing permissions and limitations under the License. "/>
     <script src="json2.js"></script>
   </head>
-  <body bgcolor="black" height="100%" width="100%">
+  <body bgcolor="" height="100%" width="100%">
     <canvas
       id="c"
       width="100%"
@@ -56,7 +56,7 @@
         xhr.send(JSON.stringify(objects));
       }
 
-      world = {};
+      world = update();
 
       //XXX: TODO Make this prettier!
       function drawCircle(context, entity) {
@@ -77,24 +77,36 @@
             false
           );
           stroke();
+          fill();
         }
       }
 
       function prepEntity(entity) {
         if (!entity["colour"]) {
-          entity["colour"] = "#FF0000";
+          entity["colour"] = "#233D4D";
         }
         if (!entity["radius"]) {
-          entity["radius"] = 50;
+          entity["radius"] = 25;
         }
         return entity;
       }
 
       function clearFrame() {
         with (context) {
-          moveTo(0, 0);
-          fillStyle = "#000";
-          fillRect(0, 0, W, H);
+          context.canvas.width = W;
+          context.canvas.height = H;
+
+          for (x = 0; x <= W; x += 20) {
+            context.moveTo(x, 0);
+            context.lineTo(x, H);
+
+            for (y = 0; y <= H; y += 20) {
+              context.moveTo(0, y);
+              context.lineTo(W, y);
+            }
+          }
+          context.strokeStyle = "#F7F7F7";
+          context.stroke();
         }
       }
 
@@ -255,15 +267,15 @@
       // Add the application specific mouse listeners!
       //XXX: TODO Make these prettier!
       mouse.mousedowners.push(function (x, y, clicked, e) {
-        addEntityWithoutName({ x: x, y: y, colour: "blue" });
+        addEntityWithoutName({ x: x, y: y, colour: "#233D4D", radius: 10 });
       });
 
       mouse.mouseuppers.push(function (x, y, clicked, e) {
-        addEntityWithoutName({ x: x, y: y, colour: "red" });
+        addEntityWithoutName({ x: x, y: y, colour: "#FCCA46", radius: 25 });
       });
 
       mouse.mousedraggers.push(function (x, y, clicked, e) {
-        addEntityWithoutName({ x: x, y: y, colour: "green", radius: 10 });
+        addEntityWithoutName({ x: x, y: y, colour: "#FE7F2D", radius: 5 });
       });
 
       function update() {
