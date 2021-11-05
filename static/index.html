@@ -43,7 +43,7 @@
                 callback(JSON.parse(xhr.response));
               }
             } catch (e) {
-              console.log("Error: " + e.name);
+              alert("Error: " + e.name);
             }
           }
         };
@@ -146,7 +146,7 @@
         world[entity] = data;
         drawNextFrame(); // (but should we?)
         // XXX: Send a XHTML Request that updates the entity you just  modified!
-        sendJSONXMLHTTPRequest(`/entity/${entity}`, data, null);
+        sendJSONXMLHTTPRequest(`/entity/${entity}`, data, () => {});
       }
 
       var counter = 0;
